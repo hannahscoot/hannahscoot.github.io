@@ -19,7 +19,6 @@ enter = function () {
                 } else {
                     document.getElementById(guesscount.toString() + i.toString()).classList.add("letter-absent");
                     document.getElementById(guessgrid[guesscount][i]).classList.add("letter-absent");
-                    document.getElementById(guessgrid[guesscount][i]).onclick = disable();
                 }
             }
             guesscount++;
@@ -91,7 +90,7 @@ resetgame = function () {
             affectedkeyboardrowlist[i].classList.remove("letter-correct");
         } else {
             affectedkeyboardrowlist[i].classList.remove("letter-absent");
-            affectedkeyboardrowlist[i].onclick = function () {clickonletter(affectedkeyboardrowlist[i].id)};
+            console.log(affectedkeyboardrowlist[i].id);
         }
     }
     for (i = 0; i < 6; i++) {
