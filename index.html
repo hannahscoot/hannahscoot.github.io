@@ -1,6 +1,186 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <meta charset="UTF-8" />
+        <title>Wordle (infinite)</title>
+        <style type="text/css">
+            .Row {
+                display:flex;
+                justify-content:center
+            }
+            .Row-letter {
+                align-items:center;
+                border:2px solid rgba(154,166,180,.4);
+                font-size:28px;
+                font-weight:700;
+                height:64px;
+                margin:3px;
+                text-transform:uppercase;
+                width:64px;
+                border-radius:1px;
+                color:rgb(58, 58, 60)
+            }
+            .App-container {
+                display:flex;
+                flex-direction:column;
+                justify-content:center;
+                margin:0 auto;
+                max-width:600px;
+                width:100%;
+                position:relative
+            }
+            .App-container h1 {
+                margin-top:0;
+                margin-bottom:45px
+            }
+            .App-container a {
+                color:#524c33;
+                padding:5px 15px;
+                border-radius:4px;
+                background:#e9e6da;
+                text-decoration:none
+            }
+            .App-container a:hover {
+                background:#ddd9c9;
+                color:#2c281b
+            }
+            .Game {
+                -webkit-user-select:none;
+                -ms-user-select:none;
+                user-select:none
+            }
+            .Game p {
+                text-align:center
+            }
+            .Game,
+            .Game-keyboard {
+                display:flex;
+                flex-direction:column
+            }
+            .Game-keyboard-row {
+                display:flex;
+                flex-direction:row;
+                justify-content:center;
+                margin-left:5em;
+                margin-right:5em;
+            }
+            .Game-keyboard-button {
+                align-items:center;
+                background-color:rgb(129, 131, 132);
+                color:#D7DADC!important;
+                border:2px solid transparent;
+                border-radius:4px;
+                color:inherit;
+                cursor:pointer;
+                display:flex;
+                flex:1 1;
+                font-size:16px;
+                font-weight:400;
+                justify-content:center;
+                margin:3px;
+                min-height:20px;
+                padding:10px;
+                text-decoration:inherit;
+                text-transform:capitalize
+            }
+            .Game-keyboard-button-wide {
+                flex:2 1
+            }
+            .Game-keyboard-button:focus {
+                outline:0
+            }
+            .letter-missing {
+                border:2px solid #f38237;
+            }
+            .letter-correct {
+                background-color:#79b851;
+                border:2px solid #79b851;
+                color:#fff!important
+            }
+            .letter-elsewhere {
+                background-color:#f3c237;
+                border:2px dotted #f3c237;
+                color:#fff!important
+            }
+            .letter-absent {
+                background-color:rgba(154,166,180,.4);
+                border:2px solid transparent;
+                color:#fff!important
+            }
+            .Game-options {
+                font-weight: 700;
+                font-size: 36px;
+                letter-spacing: 0.2rem;
+                border-bottom:1px solid #3a3a3c;
+                color:#d7dadc;
+                margin-bottom: 2em;
+            }
+            .Game-options-sub {
+                font-weight: 400;
+                font-size: 24px;
+                letter-spacing: 0.2rem;
+                color:#d7dadc;
+                margin-bottom: 2em;
+            }
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                display: none;
+                overflow: auto;
+                background-color: #000000;
+                background-color: rgba(0, 0, 0, 0.7);
+                z-index: 9999;
+            }
+            .modal-window {
+                position: relative;
+                background-color:rgb(18, 18, 19); 
+                width: 50%;
+                margin: 10% auto;
+                padding: 20px;
+            }
+            .modal-window.small {
+                width: 30%;
+            }
+            .close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                color: #d7dadc;
+                height: 30px;
+                width: 30px;
+                font-size: 30px;
+                line-height: 30px;
+                text-align: center;
+                margin-top: 1em;
+                margin-right: 1em;
+            }
+            .close:hover,
+            .close:focus {
+                color: #000000;
+                cursor: pointer;
+            }
+            .open {
+                display: block;
+            }
+            .confirm {
+                height: 3em;
+                width: 6em;
+                text-align: center;
+                color: #d7dadc;
+                background-color: tomato;
+                border: transparent;
+                font-size: 16px;
+            }
+            .confirm:hover,
+            .comfirm:focus {
+                background-color:royalblue;
+                cursor: pointer;
+            }
+        </style>
+        <script src="app.js"></script>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJYEY6QZHP"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -10,65 +190,113 @@
             gtag('config', 'G-WJYEY6QZHP');
         </script>
     </head>
-    <body>
-        <div class="relative bg-white overflow-hidden">
-            <div class="max-w-7xl mx-auto">
-            <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-                <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <polygon points="50,0 100,0 50,100 0,100" />
-                </svg>
-                <div>
-                <div class="relative pt-6 px-4 sm:px-6 lg:px-8">
-                    <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
-                    <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-                        <div class="flex items-center justify-between w-full md:w-auto">
-                            <a href="#">
-                                intervention
-                            </a>
+    <body style="background-color:rgb(18, 18, 19); font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;">
+        <div class="container">
+            <div id="root">
+                <div class="App-container">
+                    <div class="Game" style="display: block;">
+                        <div class="Game-options">
+                            <p style="margin-bottom: 0em; margin-top: 0em;">
+                                <span>WORDLE</span>
+                            </p>
+                            <button style="float:right; margin-top:1em; height:2em; width:4em; background-color:royalblue;" class="confirm" onclick="openModal('stuck')">Stuck?</button>
+                        </div>
+                        <div style="margin-bottom: 2em; text-align: center; color:#d7dadc">
+                            <span id="message"></span>
+                        </div>
+                        <div class="Row">
+                            <div class="Row-letter" id="00"></div>
+                            <div class="Row-letter" id="01"></div>
+                            <div class="Row-letter" id="02"></div>
+                            <div class="Row-letter" id="03"></div>
+                            <div class="Row-letter" id="04"></div>
+                        </div>
+                        <div class="Row">
+                            <div class="Row-letter" id="10"></div>
+                            <div class="Row-letter" id="11"></div>
+                            <div class="Row-letter" id="12"></div>
+                            <div class="Row-letter" id="13"></div>
+                            <div class="Row-letter" id="14"></div>
+                        </div>
+                        <div class="Row">
+                            <div class="Row-letter" id="20"></div>
+                            <div class="Row-letter" id="21"></div>
+                            <div class="Row-letter" id="22"></div>
+                            <div class="Row-letter" id="23"></div>
+                            <div class="Row-letter" id="24"></div>
+                        </div>
+                        <div class="Row">
+                            <div class="Row-letter" id="30"></div>
+                            <div class="Row-letter" id="31"></div>
+                            <div class="Row-letter" id="32"></div>
+                            <div class="Row-letter" id="33"></div>
+                            <div class="Row-letter" id="34"></div>
+                        </div>
+                        <div class="Row">
+                            <div class="Row-letter" id="40"></div>
+                            <div class="Row-letter" id="41"></div>
+                            <div class="Row-letter" id="42"></div>
+                            <div class="Row-letter" id="43"></div>
+                            <div class="Row-letter" id="44"></div>
+                        </div>
+                        <div class="Row">
+                            <div class="Row-letter" id="50"></div>
+                            <div class="Row-letter" id="51"></div>
+                            <div class="Row-letter" id="52"></div>
+                            <div class="Row-letter" id="53"></div>
+                            <div class="Row-letter" id="54"></div>
+                        </div>
+                        <div class="Game-keyboard"style="margin-top:2em;"> 
+                            <div class="Game-keyboard-row">
+                                <div tabindex="-1" class="Game-keyboard-button" id="q" onclick="clickonletter('q')">q</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="w" onclick="clickonletter('w')">w</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="e" onclick="clickonletter('e')">e</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="r" onclick="clickonletter('r')">r</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="t" onclick="clickonletter('t')">t</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="y" onclick="clickonletter('y')">y</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="u" onclick="clickonletter('u')">u</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="i" onclick="clickonletter('i')">i</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="o" onclick="clickonletter('o')">o</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="p" onclick="clickonletter('p')">p</div>
+                            </div>
+                            <div class="Game-keyboard-row">
+                                <div tabindex="-1" class="Game-keyboard-button" id="a" onclick="clickonletter('a')">a</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="s" onclick="clickonletter('s')">s</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="d" onclick="clickonletter('d')">d</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="f" onclick="clickonletter('f')">f</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="g" onclick="clickonletter('g')">g</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="h" onclick="clickonletter('h')">h</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="j" onclick="clickonletter('j')">j</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="k" onclick="clickonletter('k')">k</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="l" onclick="clickonletter('l')">l</div>
+                            </div>
+                            <div class="Game-keyboard-row">
+                                <div tabindex="-1" class="Game-keyboard-button Game-keyboard-button-wide" id="enter" onclick="enter()">ENTER</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="z" onclick="clickonletter('z')">z</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="x" onclick="clickonletter('x')">x</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="c" onclick="clickonletter('c')">c</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="v" onclick="clickonletter('v')">v</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="b" onclick="clickonletter('b')">b</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="n" onclick="clickonletter('n')">n</div>
+                                <div tabindex="-1" class="Game-keyboard-button" id="m" onclick="clickonletter('m')">m</div>
+                                <div tabindex="-1" class="Game-keyboard-button Game-keyboard-button-wide" id="remove" onclick="remove()">⌫</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
-                        <a href="#" class="font-medium text-gray-500 hover:text-gray-900">you</a>
-        
-                        <a href="#" class="font-medium text-gray-500 hover:text-gray-900">are</a>
-        
-                        <a href="#" class="font-medium text-gray-500 hover:text-gray-900">addicted</a>
-        
-                        <a href="#" class="font-medium text-gray-500 hover:text-gray-900">to</a>
-        
-                        <a href="#" class="font-medium text-sky-600 hover:text-sky-700">wordle</a>
-                    </div>
-                    </nav>
                 </div>
-
-        
-                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                <div class="sm:text-center lg:text-left">
-                    <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                    <span class="block xl:inline">the</span>
-                    <span class="block text-sky-600 xl:inline">intervention</span>
-                    </h1>
-                    <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                    you are addicted
-                    </p>
-                    <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                    <div class="rounded-md shadow">
-                        <a href="#" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 hover:text-white md:py-4 md:text-lg md:px-10">
-                        yes
-                        </a>
-                    </div>
-                    <div class="mt-3 sm:mt-0 sm:ml-3">
-                        <a href="#" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-sky-600 bg-sky-100 hover:bg-sky-200 md:py-4 md:text-lg md:px-10">
-                        no
-                        </a>
-                    </div>
-                    </div>
+            </div>
+        </div>
+        <div id="simpleModal" class="modal">
+            <div class="modal-window small">
+                <span id="closethis" class="close" onclick="closeModal()">&times;</span>
+                <div id="modalContent" style="display: block; text-align: center; margin-top: 2em;">
+                    <span id="endmessage" class="Game-options"></span>
+                    <p id="timer" class="Game-options-sub" style="margin-bottom: 1em;"></p>
+                    <p class="Game-options-sub" style="margin-bottom: 1em;">The word was</p>
+                    <p id="wordtoguess" class="Game-options-sub" style="color:yellowgreen;"></p>
+                    <p class="Game-options-sub" style="margin-bottom: 1em;">Start again?</p>
+                    <button class="confirm" onclick="resetgame()">RESTART</button>
                 </div>
-                </main>
-            </div>
-            </div>
-            <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-            <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="https://cdn.pixabay.com/photo/2016/05/24/16/48/mountains-1412683_960_720.png" alt="">
             </div>
         </div>
     </body>
