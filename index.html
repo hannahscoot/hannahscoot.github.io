@@ -2,185 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Wordle (infinite)</title>
-        <style type="text/css">
-            .Row {
-                display:flex;
-                justify-content:center
-            }
-            .Row-letter {
-                align-items:center;
-                border:2px solid rgba(154,166,180,.4);
-                font-size:28px;
-                font-weight:700;
-                height:64px;
-                margin:3px;
-                text-transform:uppercase;
-                width:64px;
-                border-radius:1px;
-                color:rgb(58, 58, 60)
-            }
-            .App-container {
-                display:flex;
-                flex-direction:column;
-                justify-content:center;
-                margin:0 auto;
-                max-width:600px;
-                width:100%;
-                position:relative
-            }
-            .App-container h1 {
-                margin-top:0;
-                margin-bottom:45px
-            }
-            .App-container a {
-                color:#524c33;
-                padding:5px 15px;
-                border-radius:4px;
-                background:#e9e6da;
-                text-decoration:none
-            }
-            .App-container a:hover {
-                background:#ddd9c9;
-                color:#2c281b
-            }
-            .Game {
-                -webkit-user-select:none;
-                -ms-user-select:none;
-                user-select:none
-            }
-            .Game p {
-                text-align:center
-            }
-            .Game,
-            .Game-keyboard {
-                display:flex;
-                flex-direction:column
-            }
-            .Game-keyboard-row {
-                display:flex;
-                flex-direction:row;
-                justify-content:center;
-                margin-left:5em;
-                margin-right:5em;
-            }
-            .Game-keyboard-button {
-                align-items:center;
-                background-color:rgb(129, 131, 132);
-                color:#D7DADC!important;
-                border:2px solid transparent;
-                border-radius:4px;
-                color:inherit;
-                cursor:pointer;
-                display:flex;
-                flex:1 1;
-                font-size:16px;
-                font-weight:400;
-                justify-content:center;
-                margin:3px;
-                min-height:20px;
-                padding:10px;
-                text-decoration:inherit;
-                text-transform:capitalize
-            }
-            .Game-keyboard-button-wide {
-                flex:2 1
-            }
-            .Game-keyboard-button:focus {
-                outline:0
-            }
-            .letter-missing {
-                border:2px solid #f38237;
-            }
-            .letter-correct {
-                background-color:#79b851;
-                border:2px solid #79b851;
-                color:#fff!important
-            }
-            .letter-elsewhere {
-                background-color:#f3c237;
-                border:2px dotted #f3c237;
-                color:#fff!important
-            }
-            .letter-absent {
-                background-color:rgba(154,166,180,.4);
-                border:2px solid transparent;
-                color:#fff!important
-            }
-            .Game-options {
-                font-weight: 700;
-                font-size: 36px;
-                letter-spacing: 0.2rem;
-                border-bottom:1px solid #3a3a3c;
-                color:#d7dadc;
-                margin-bottom: 2em;
-            }
-            .Game-options-sub {
-                font-weight: 400;
-                font-size: 24px;
-                letter-spacing: 0.2rem;
-                color:#d7dadc;
-                margin-bottom: 2em;
-            }
-            .modal {
-                position: fixed;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                display: none;
-                overflow: auto;
-                background-color: #000000;
-                background-color: rgba(0, 0, 0, 0.7);
-                z-index: 9999;
-            }
-            .modal-window {
-                position: relative;
-                background-color:rgb(18, 18, 19); 
-                width: 50%;
-                margin: 10% auto;
-                padding: 20px;
-            }
-            .modal-window.small {
-                width: 30%;
-            }
-            .close {
-                position: absolute;
-                top: 0;
-                right: 0;
-                color: #d7dadc;
-                height: 30px;
-                width: 30px;
-                font-size: 30px;
-                line-height: 30px;
-                text-align: center;
-                margin-top: 1em;
-                margin-right: 1em;
-            }
-            .close:hover,
-            .close:focus {
-                color: #000000;
-                cursor: pointer;
-            }
-            .open {
-                display: block;
-            }
-            .confirm {
-                height: 3em;
-                width: 6em;
-                text-align: center;
-                color: #d7dadc;
-                background-color: tomato;
-                border: transparent;
-                font-size: 16px;
-            }
-            .confirm:hover,
-            .comfirm:focus {
-                background-color:royalblue;
-                cursor: pointer;
-            }
-        </style>
-        <script src="app.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wordle - by Hannah</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico"/>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJYEY6QZHP"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -189,115 +13,220 @@
 
             gtag('config', 'G-WJYEY6QZHP');
         </script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+        <script src="app.js"></script>
+        <style type="text/tailwindcss">
+            @layer base {
+                html {
+                    font-family: Clear Sans, Helvetica Neue, Arial, sans-serif;
+                    background-color: rgb(18, 18, 19);
+                }
+            }
+            @layer components {
+                .keyboard-row {
+                  @apply w-full flex flex-auto justify-center space-x-1;
+                }
+                .keyboard-unguessed{
+                  @apply bg-gray-400 w-10 py-4 rounded cursor-pointer;
+                }
+                .keyboard-guessedwrong{
+                  @apply bg-gray-600 w-10 py-4 rounded cursor-pointer;
+                }
+                .keyboard-guessedvalid{
+                  @apply bg-yellow-300 w-10 py-4 rounded cursor-pointer;
+                }
+                .keyboard-guessedcorrect{
+                  @apply bg-green-500 w-10 py-4 rounded cursor-pointer;
+                }
+                .keyboard-style {
+                  @apply font-bold text-white cursor-pointer;
+                }
+                .letter-style {
+                  @apply pt-[20%] font-bold text-3xl text-white;
+                }
+                .letter-correct {
+                  @apply w-full h-0 pb-[100%] bg-green-500 border-2 border-transparent;
+                }
+                .letter-valid {
+                  @apply w-full h-0 pb-[100%] bg-yellow-300 border-2 border-transparent;
+                }
+                .letter-wrong {
+                  @apply w-full h-0 pb-[100%] bg-gray-500 border-2 border-transparent; 
+                }
+                .letter-entry {
+                  @apply w-full h-0 pb-[100%] border-2 border-gray-400;
+                }
+                .letter-emtpy {
+                  @apply w-full h-0 pb-[100%] border-2 border-gray-500;
+                }
+                .modal-backdrop {
+                  @apply backdrop-filter backdrop-blur-sm bg-white/10 z-50 inset-0 fixed;
+                }
+                .modal {
+                  @apply z-[9999] absolute block top-[12%] left-1/2 -translate-x-1/2 w-[90%] max-w-md p-2 bg-[#121213] border-2 border-gray-500 rounded;
+                }
+                .stat-bar {
+                  @apply bg-gray-500 rounded w-[5%] mt-2 mx-1 text-right pr-1;
+                }
+            }
+          </style>
     </head>
-    <body style="background-color:rgb(18, 18, 19); font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;">
-        <div class="container">
-            <div id="root">
-                <div class="App-container">
-                    <div class="Game" style="display: block;">
-                        <div class="Game-options">
-                            <p style="margin-bottom: 0em; margin-top: 0em;">
-                                <span>WORDLE</span>
-                            </p>
-                            <button style="float:right; margin-top:1em; height:2em; width:4em; background-color:royalblue;" class="confirm" onclick="openModal('stuck')">Stuck?</button>
-                        </div>
-                        <div style="margin-bottom: 2em; text-align: center; color:#d7dadc">
-                            <span id="message"></span>
-                        </div>
-                        <div class="Row">
-                            <div class="Row-letter" id="00"></div>
-                            <div class="Row-letter" id="01"></div>
-                            <div class="Row-letter" id="02"></div>
-                            <div class="Row-letter" id="03"></div>
-                            <div class="Row-letter" id="04"></div>
-                        </div>
-                        <div class="Row">
-                            <div class="Row-letter" id="10"></div>
-                            <div class="Row-letter" id="11"></div>
-                            <div class="Row-letter" id="12"></div>
-                            <div class="Row-letter" id="13"></div>
-                            <div class="Row-letter" id="14"></div>
-                        </div>
-                        <div class="Row">
-                            <div class="Row-letter" id="20"></div>
-                            <div class="Row-letter" id="21"></div>
-                            <div class="Row-letter" id="22"></div>
-                            <div class="Row-letter" id="23"></div>
-                            <div class="Row-letter" id="24"></div>
-                        </div>
-                        <div class="Row">
-                            <div class="Row-letter" id="30"></div>
-                            <div class="Row-letter" id="31"></div>
-                            <div class="Row-letter" id="32"></div>
-                            <div class="Row-letter" id="33"></div>
-                            <div class="Row-letter" id="34"></div>
-                        </div>
-                        <div class="Row">
-                            <div class="Row-letter" id="40"></div>
-                            <div class="Row-letter" id="41"></div>
-                            <div class="Row-letter" id="42"></div>
-                            <div class="Row-letter" id="43"></div>
-                            <div class="Row-letter" id="44"></div>
-                        </div>
-                        <div class="Row">
-                            <div class="Row-letter" id="50"></div>
-                            <div class="Row-letter" id="51"></div>
-                            <div class="Row-letter" id="52"></div>
-                            <div class="Row-letter" id="53"></div>
-                            <div class="Row-letter" id="54"></div>
-                        </div>
-                        <div class="Game-keyboard"style="margin-top:2em;"> 
-                            <div class="Game-keyboard-row">
-                                <div tabindex="-1" class="Game-keyboard-button" id="q" onclick="clickonletter('q')">q</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="w" onclick="clickonletter('w')">w</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="e" onclick="clickonletter('e')">e</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="r" onclick="clickonletter('r')">r</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="t" onclick="clickonletter('t')">t</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="y" onclick="clickonletter('y')">y</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="u" onclick="clickonletter('u')">u</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="i" onclick="clickonletter('i')">i</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="o" onclick="clickonletter('o')">o</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="p" onclick="clickonletter('p')">p</div>
-                            </div>
-                            <div class="Game-keyboard-row">
-                                <div tabindex="-1" class="Game-keyboard-button" id="a" onclick="clickonletter('a')">a</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="s" onclick="clickonletter('s')">s</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="d" onclick="clickonletter('d')">d</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="f" onclick="clickonletter('f')">f</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="g" onclick="clickonletter('g')">g</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="h" onclick="clickonletter('h')">h</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="j" onclick="clickonletter('j')">j</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="k" onclick="clickonletter('k')">k</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="l" onclick="clickonletter('l')">l</div>
-                            </div>
-                            <div class="Game-keyboard-row">
-                                <div tabindex="-1" class="Game-keyboard-button Game-keyboard-button-wide" id="enter" onclick="enter()">ENTER</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="z" onclick="clickonletter('z')">z</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="x" onclick="clickonletter('x')">x</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="c" onclick="clickonletter('c')">c</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="v" onclick="clickonletter('v')">v</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="b" onclick="clickonletter('b')">b</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="n" onclick="clickonletter('n')">n</div>
-                                <div tabindex="-1" class="Game-keyboard-button" id="m" onclick="clickonletter('m')">m</div>
-                                <div tabindex="-1" class="Game-keyboard-button Game-keyboard-button-wide" id="remove" onclick="remove()">⌫</div>
-                            </div>
-                        </div>
+    <body>
+        <div #navigation_bar class="flex justify-around mb-6 border-b-2 border-gray-500">
+          <div #thisdivishidden> 
+            <label class="relative flex justify-between items-center pt-2 pr-2">
+              <input type="checkbox" class="absolute left-1/2 -translate-x-1/2 peer appearance-none rounded-md" disabled/>
+              <span class="w-8 h-4"></span>
+              <button class="text-2xl mx-1 mb-1 ml-6 text-transparent" disabled><i class="bi bi-bar-chart-line"></i></button> <!-- open game stat page-->
+            </label>
+          </div>
+          <div #title class="text-center font-bold text-4xl tracking-widest text-gray-300 pt-1">
+            Wordle
+          </div>
+          <div #options>
+            <label class="relative flex justify-between items-center pt-2 pr-2">
+              <input id="modeToggle" type="checkbox" class="absolute left-1/2 -translate-x-1/2 peer appearance-none rounded-md" onchange="toggleMode()"/> <!-- when toggled on (background red) hard mode active-->
+              <span class="cursor-pointer w-8 h-4 flex items-center flex-shrink-0 ml-4 p-1 bg-gray-300 rounded-full duration-300 ease-in-out peer-checked:bg-purple-400 after:w-3 after:h-3 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-3"></span>
+              <button class="text-2xl mx-1 mb-1 ml-4 text-white" onclick="openModal()"><i class="bi bi-bar-chart-line"></i></button> <!-- open game stat page-->
+            </label>
+          </div>
+        </div>
+        <div #content class="max-w-screen h-full relative">
+            <div id="error-message" class="text-center pb-2 text-white"> </div>
+            <div #grid_parent class="px-2 max-w-sm mx-auto">
+                <div #wordle_grid class="grid grid-cols-5 gap-2 mt-2 mb-4 text-center">
+                    <div class="letter-emtpy"><p id="00" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="01" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="02" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="03" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="04" class="letter-style"></p></div>
+
+                    <div class="letter-emtpy"><p id="10" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="11" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="12" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="13" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="14" class="letter-style"></p></div>
+
+                    <div class="letter-emtpy"><p id="20" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="21" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="22" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="23" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="24" class="letter-style"></p></div>
+        
+                    <div class="letter-emtpy"><p id="30" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="31" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="32" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="33" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="34" class="letter-style"></p></div>
+
+                    <div class="letter-emtpy"><p id="40" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="41" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="42" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="43" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="44" class="letter-style"></p></div>
+
+                    <div class="letter-emtpy"><p id="50" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="51" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="52" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="53" class="letter-style"></p></div>
+                    <div class="letter-emtpy"><p id="54" class="letter-style"></p></div>
+                </div>
+            </div>
+            <div #keyboard class="py-4 px-1 max-w-md mx-auto text-center">
+                <div #first_row class="keyboard-row py-1">
+                    <div class="keyboard-unguessed" onclick="keyboardPress('q')"><p id="q" class="keyboard-style">Q</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('w')"><p id="w" class="keyboard-style">W</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('e')"><p id="e" class="keyboard-style">E</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('r')"><p id="r" class="keyboard-style">R</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('t')"><p id="t" class="keyboard-style">T</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('y')"><p id="y" class="keyboard-style">Y</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('u')"><p id="u" class="keyboard-style">U</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('i')"><p id="i" class="keyboard-style">I</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('o')"><p id="o" class="keyboard-style">O</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('p')"><p id="p" class="keyboard-style">P</p></div>
+                </div>
+                <div #second_row class="keyboard-row">
+                    <div class="keyboard-unguessed" onclick="keyboardPress('a')"><p id="a" class="keyboard-style">A</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('s')"><p id="s" class="keyboard-style">S</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('d')"><p id="d" class="keyboard-style">D</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('f')"><p id="f" class="keyboard-style">F</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('g')"><p id="g" class="keyboard-style">G</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('h')"><p id="h" class="keyboard-style">H</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('j')"><p id="j" class="keyboard-style">J</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('k')"><p id="k" class="keyboard-style">K</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('l')"><p id="l" class="keyboard-style">L</p></div>
+                </div>
+                <div #last_row class="keyboard-row py-1">
+                    <div class="keyboard-unguessed w-16" onclick="enter()"><p class="keyboard-style">ENTER</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('z')"><p id="z" class="keyboard-style">Z</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('x')"><p id="x" class="keyboard-style">X</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('c')"><p id="c" class="keyboard-style">C</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('v')"><p id="v" class="keyboard-style">V</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('b')"><p id="b" class="keyboard-style">B</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('n')"><p id="n" class="keyboard-style">N</p></div>
+                    <div class="keyboard-unguessed" onclick="keyboardPress('m')"><p id="m" class="keyboard-style">M</p></div>
+                    <div class="keyboard-unguessed w-16" onclick="backspace()"><p class="keyboard-style"><i class="bi bi-backspace"></i></p></div>
+                </div>
+            </div>
+            <div class="modal hidden">
+              <div class="text-white">
+                <div class="flex justify-end pr-2">
+                  <button class="text-2xl" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="p-2 text-center">
+                  <p id="title-message" class="text-lg"></p>
+                  <p id="subtitle-message" class="text-lg py-2"></p>
+                  <div class="flex justify-around py-2 text-base">
+                    <div class="p-2">
+                      <div id="no-of-rounds" class="font-bold"></div>
+                      <div class="">Rounds Played</div>
                     </div>
+                    <div class="p-2">
+                      <div id="win-rate" class="font-bold"></div>
+                      <div class="">Win Rate</div>
+                    </div>
+                    <div class="p-2">
+                      <div id="record-time" class="font-bold"></div>
+                      <div class="">Best Time</div>
+                    </div>
+                  </div>
+                  <div #stats class="mx-[5%]">
+                    <div class="flex">
+                      <div class="mt-2 mx-1">1</div>
+                      <div id="1" class="stat-bar">0</div>
+                    </div>
+                    <div class="flex">
+                      <div class="mt-2 mx-1">2</div>
+                      <div id="2" class="stat-bar">0</div>
+                    </div>
+                    <div class="flex">
+                      <div class="mt-2 mx-1">3</div>
+                      <div id="3" class="stat-bar">0</div>
+                    </div>
+                    <div class="flex">
+                      <div class="mt-2 mx-1">4</div>
+                      <div id="4" class="stat-bar">0</div>
+                    </div>
+                    <div class="flex">
+                      <div class="mt-2 mx-1">5</div>
+                      <div id="5" class="stat-bar">0</div>
+                    </div>
+                    <div class="flex">
+                      <div class="mt-2 mx-1">6</div>
+                      <div id="6" class="stat-bar">0</div>
+                    </div>
+                  </div>
+                  <div class="py-4 flex justify-around">
+                    <button id="reportButton" class="text-2xl hover:text-red-500 border hover:border-red-500 px-2" onclick="reportWord()"><i class="bi bi-megaphone"></i></button>
+                    <button class="p-2 px-8 bg-gray-500 rounded-sm hover:bg-blue-600 text-lg tracking-wider" onclick="restartGame()">Next Wordle <i class="bi bi-arrow-right-square pl-2"></i></button>
+                    <button class="text-transparent text-2xl border-transparent px-2" disabled><i class="bi bi-megaphone"></i></button>
+                  </div>
                 </div>
+              </div>
             </div>
         </div>
-        <div id="simpleModal" class="modal">
-            <div class="modal-window small">
-                <span id="closethis" class="close" onclick="closeModal()">&times;</span>
-                <div id="modalContent" style="display: block; text-align: center; margin-top: 2em;">
-                    <span id="endmessage" class="Game-options"></span>
-                    <p id="timer" class="Game-options-sub" style="margin-bottom: 1em;"></p>
-                    <p class="Game-options-sub" style="margin-bottom: 1em;">The word was</p>
-                    <p id="wordtoguess" class="Game-options-sub" style="color:yellowgreen;"></p>
-                    <p class="Game-options-sub" style="margin-bottom: 1em;">Start again?</p>
-                    <button class="confirm" onclick="resetgame()">RESTART</button>
-                </div>
-            </div>
-        </div>
+        <div #footer></div>
+        <div class="modal-backdrop hidden"></div>
     </body>
 </html>
