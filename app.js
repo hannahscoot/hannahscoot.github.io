@@ -128,7 +128,7 @@ enter = function() {
                     current_guess = ["","","","",""];
                 } 
                 else {
-                    number_of_guesses++;
+                    number_of_guesses = number_of_guesses + 2;
                     var letters = localStorage.getItem('letters');
                     letters += (current_guess.join(""))+" ";
                     localStorage.setItem('letters', letters);
