@@ -28,16 +28,16 @@
                   @apply w-full flex flex-auto justify-center space-x-1;
                 }
                 .keyboard-unguessed{
-                  @apply bg-gray-400 w-10 py-4 rounded cursor-pointer;
+                  @apply bg-gray-400 w-8 py-3 rounded cursor-pointer;
                 }
                 .keyboard-guessedwrong{
-                  @apply bg-gray-600 w-10 py-4 rounded cursor-pointer;
+                  @apply bg-gray-600 w-8 py-3 rounded cursor-pointer;
                 }
                 .keyboard-guessedvalid{
-                  @apply bg-yellow-300 w-10 py-4 rounded cursor-pointer;
+                  @apply bg-yellow-300 w-8 py-3 rounded cursor-pointer;
                 }
                 .keyboard-guessedcorrect{
-                  @apply bg-green-500 w-10 py-4 rounded cursor-pointer;
+                  @apply bg-green-500 w-8 py-3 rounded cursor-pointer;
                 }
                 .keyboard-style {
                   @apply font-bold text-white cursor-pointer;
@@ -73,7 +73,7 @@
           </style>
     </head>
     <body>
-        <div #navigation_bar class="flex justify-around mb-6 border-b-2 border-gray-500">
+        <div #navigation_bar class="flex justify-around mb-2 border-b-2 border-gray-500">
           <div #thisdivishidden> 
             <label class="relative flex justify-between items-center pt-2 pr-2">
               <input type="checkbox" class="absolute left-1/2 -translate-x-1/2 peer appearance-none rounded-md" disabled/>
@@ -94,7 +94,7 @@
         </div>
         <div #content class="max-w-screen h-full relative">
             <div id="error-message" class="text-center pb-2 text-white"> </div>
-            <div #grid_parent class="px-2 max-w-sm mx-auto">
+            <div #grid_parent class="px-8 max-w-sm mx-auto">
                 <div #wordle_grid class="grid grid-cols-5 gap-2 mt-2 mb-4 text-center">
                     <div class="letter-emtpy"><p id="00" class="letter-style"></p></div>
                     <div class="letter-emtpy"><p id="01" class="letter-style"></p></div>
@@ -133,7 +133,7 @@
                     <div class="letter-emtpy"><p id="54" class="letter-style"></p></div>
                 </div>
             </div>
-            <div #keyboard class="py-4 px-1 max-w-md mx-auto text-center">
+            <div #keyboard class="py-2 px-1 max-w-md mx-auto text-center">
                 <div #first_row class="keyboard-row py-1">
                     <div class="keyboard-unguessed" onclick="keyboardPress('q')"><p id="q" class="keyboard-style">Q</p></div>
                     <div class="keyboard-unguessed" onclick="keyboardPress('w')"><p id="w" class="keyboard-style">W</p></div>
@@ -158,7 +158,7 @@
                     <div class="keyboard-unguessed" onclick="keyboardPress('l')"><p id="l" class="keyboard-style">L</p></div>
                 </div>
                 <div #last_row class="keyboard-row py-1">
-                    <div class="keyboard-unguessed w-16" onclick="enter()"><p class="keyboard-style">ENTER</p></div>
+                    <div class="keyboard-unguessed w-12 text-xs" onclick="enter()"><p class="keyboard-style">ENTER</p></div>
                     <div class="keyboard-unguessed" onclick="keyboardPress('z')"><p id="z" class="keyboard-style">Z</p></div>
                     <div class="keyboard-unguessed" onclick="keyboardPress('x')"><p id="x" class="keyboard-style">X</p></div>
                     <div class="keyboard-unguessed" onclick="keyboardPress('c')"><p id="c" class="keyboard-style">C</p></div>
@@ -166,7 +166,7 @@
                     <div class="keyboard-unguessed" onclick="keyboardPress('b')"><p id="b" class="keyboard-style">B</p></div>
                     <div class="keyboard-unguessed" onclick="keyboardPress('n')"><p id="n" class="keyboard-style">N</p></div>
                     <div class="keyboard-unguessed" onclick="keyboardPress('m')"><p id="m" class="keyboard-style">M</p></div>
-                    <div class="keyboard-unguessed w-16" onclick="backspace()"><p class="keyboard-style"><i class="bi bi-backspace"></i></p></div>
+                    <div class="keyboard-unguessed w-12" onclick="backspace()"><p class="keyboard-style"><i class="bi bi-backspace"></i></p></div>
                 </div>
             </div>
             <div class="modal hidden">
