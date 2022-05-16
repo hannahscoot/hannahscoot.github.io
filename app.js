@@ -65,64 +65,67 @@ enter = function() {
     if (current_guess.findIndex(i => i == "") == -1) {
         var index = wordsToGuessAgainst.findIndex(i => i == current_guess.join(""));
         if (index != -1) {
-            var word_array = [...word_to_guess];
-            for (k=0; k<5; k++) {
-                var indices = []
-                word_array.forEach((letter, index) => letter == current_guess[k] ? indices.push(index) : null);
-                if (indices.length == 0) {
-                    var element = document.getElementById(number_of_guesses.toString()+(k).toString());
-                    element.innerHTML = current_guess[k].toUpperCase();
-                    element.parentElement.classList.replace("letter-entry", "letter-wrong");
-                    element.parentElement.classList.replace("letter-emtpy", "letter-wrong");
-                    var keyboard_element = document.getElementById(current_guess[k]);
-                    keyboard_element.parentElement.classList.replace("keyboard-unguessed", "keyboard-guessedwrong");
-                } 
-                else if (current_guess[k] == word_to_guess[k]) {
-                    var element = document.getElementById(number_of_guesses.toString()+(k).toString());
-                    element.innerHTML = current_guess[k].toUpperCase();
+            if (word_to_guess.toString() === current_guess.toString()) {
+                for (i=0; i<5; i++) { //Found all matching characters in position
+                    var element = document.getElementById(number_of_guesses.toString()+(i).toString());
+                    element.innerHTML = current_guess[i].toUpperCase();
                     element.parentElement.classList.replace("letter-entry", "letter-correct");
                     element.parentElement.classList.replace("letter-emtpy", "letter-correct");
-                    var keyboard_element = document.getElementById(current_guess[k]);
+                    var keyboard_element = document.getElementById(current_guess[i]);
                     keyboard_element.parentElement.classList.replace("keyboard-unguessed", "keyboard-guessedcorrect");
-                } 
-                else {
-                    var guess_indices = []
-                    current_guess.forEach((letter, index) => letter == current_guess[k] ? guess_indices.push(index) : null);
-                    var intersection = indices.filter(element => guess_indices.indexOf(element) !== -1);
-                    intersection.forEach(i => indices.splice(i, 1));
-                    if (indices.length == 0) {
-                        var element = document.getElementById(number_of_guesses.toString()+(k).toString());
-                        element.innerHTML = current_guess[k].toUpperCase();
-                        element.parentElement.classList.replace("letter-entry", "letter-wrong");
-                        element.parentElement.classList.replace("letter-emtpy", "letter-wrong");
-                        var keyboard_element = document.getElementById(current_guess[k]);
-                        keyboard_element.parentElement.classList.replace("keyboard-unguessed", "keyboard-guessedwrong");
-                    } 
-                    else {
-                        word_array.splice(indices[0], 1);
-                        var element = document.getElementById(number_of_guesses.toString()+(k).toString());
-                        element.innerHTML = current_guess[k].toUpperCase();
-                        element.parentElement.classList.replace("letter-entry", "letter-valid");
-                        element.parentElement.classList.replace("letter-emtpy", "letter-valid");
-                        var keyboard_element = document.getElementById(current_guess[k]);
-                        keyboard_element.parentElement.classList.replace("keyboard-unguessed", "keyboard-guessedvalid");
-                    }
                 }
-            }
-            if (word_to_guess.toString() === current_guess.toString()) {
                 number_of_guesses++;
                 var letters = localStorage.getItem('letters');
-                letters += (current_guess.join(""))+" ";
+                letters += (current_guess.join(""));
                 localStorage.setItem('letters', letters);
                 if (parseInt(localStorage.getItem('endTime')) == 0) {
                     preEndGame();
                 }  
                 endGame();
-            }
+            } 
             else {
+                var word_array = [...word_to_guess];
+                var guess_array = [...current_guess];
+                for (i=0; i<5; i++) { //Found all matching characters in position
+                    if (word_array[i] == guess_array[i]) {
+                        var element = document.getElementById(number_of_guesses.toString()+(i).toString());
+                        element.innerHTML = current_guess[i].toUpperCase();
+                        element.parentElement.classList.replace("letter-entry", "letter-correct");
+                        element.parentElement.classList.replace("letter-emtpy", "letter-correct");
+                        var keyboard_element = document.getElementById(current_guess[i]);
+                        keyboard_element.parentElement.classList.replace("keyboard-unguessed", "keyboard-guessedcorrect");
+                        word_array[i] = "*";
+                        guess_array[i] = "*";
+                    }
+                }
+                for (i=0; i<5; i++) { //Find all matching characters not in position
+                    if (word_array[i] != "*") {
+                        var index = guess_array.findIndex(letter => letter == word_array[i]);
+                        if (index != -1) {
+                            var element = document.getElementById(number_of_guesses.toString()+(index).toString());
+                            element.innerHTML = current_guess[index].toUpperCase();
+                            element.parentElement.classList.replace("letter-entry", "letter-valid");
+                            element.parentElement.classList.replace("letter-emtpy", "letter-valid");
+                            var keyboard_element = document.getElementById(current_guess[index]);
+                            keyboard_element.parentElement.classList.replace("keyboard-unguessed", "keyboard-guessedvalid");
+                            word_array[i] = "*";
+                            guess_array[index] = "*";
+                        }
+                    }
+                }
+                for (i=0; i<5; i++) { //All remaining characters in guess wrong
+                    if (guess_array[i] != "*") {
+                        var element = document.getElementById(number_of_guesses.toString()+(i).toString());
+                        element.innerHTML = current_guess[i].toUpperCase();
+                        element.parentElement.classList.replace("letter-entry", "letter-wrong");
+                        element.parentElement.classList.replace("letter-emtpy", "letter-wrong");
+                        var keyboard_element = document.getElementById(current_guess[i]);
+                        keyboard_element.parentElement.classList.replace("keyboard-unguessed", "keyboard-guessedwrong");
+                    }
+                }
                 if (number_of_guesses < 5) {
                     var letters = localStorage.getItem('letters');
-                    letters += (current_guess.join(""))+" ";
+                    letters += (current_guess.join(""));
                     localStorage.setItem('letters', letters);
                     number_of_guesses++;
                     current_guess = ["","","","",""];
@@ -130,7 +133,7 @@ enter = function() {
                 else {
                     number_of_guesses = number_of_guesses + 2;
                     var letters = localStorage.getItem('letters');
-                    letters += (current_guess.join(""))+" ";
+                    letters += (current_guess.join(""));
                     localStorage.setItem('letters', letters);
                     if (parseInt(localStorage.getItem('endTime')) == 0) {
                         preEndGame();
@@ -141,10 +144,12 @@ enter = function() {
         }
         else {
             document.getElementById("error-message").innerHTML = "Your guess is not a word";
+            console.log("not word?");
         }
     }
     else {
         //row not full
+        console.log("row not full");
     }
 }
 preEndGame = function() {
@@ -168,8 +173,10 @@ preEndGame = function() {
         case 6:
             localStorage.setItem('six', parseInt(localStorage.getItem('six'))+1);
             break;
-        default:
+        case 7:
             localStorage.setItem('seven', parseInt(localStorage.getItem('seven'))+1);
+            break;
+        default:
             break;
     }  
     var endTime = Date.now();
@@ -217,6 +224,7 @@ endGame = function() {
 
     if (parseInt(localStorage.getItem('seven')) > 0) {
         var percentageWins = ((parseInt(localStorage.getItem('roundsPlayed'))-(parseInt(localStorage.getItem('seven'))))/parseInt(localStorage.getItem('roundsPlayed')))*100;
+        //NEED TO ROUND TO CLOSEST .1 POINT
         document.getElementById("win-rate").innerHTML = percentageWins + "%";
     }
     else {
@@ -224,16 +232,21 @@ endGame = function() {
     }
     
     var elapsedTime = Math.trunc(((parseInt(localStorage.getItem('endTime')))-(parseInt(localStorage.getItem('startTime'))))/1000);
-    if ((elapsedTime > 0 || elapsedTime < (parseInt(localStorage.getItem('recordTime')))) && number_of_guesses < 6) {
+    var recordTime = parseInt(localStorage.getItem('recordTime'))
+    if ((recordTime == 0 || elapsedTime < recordTime ) && elapsedTime > 0 && number_of_guesses < 7) {
         var element = document.getElementById("record-time");
         var timeString = convertTime(elapsedTime);
         element.innerHTML = timeString;
         element.classList.add('text-green-500');
         element.parentElement.classList.add('border-2', 'border-amber-400');
+        localStorage.setItem('recordTime', elapsedTime);
     } 
     else {  
-        var timeString = convertTime(parseInt(localStorage.getItem('recordTime')))         
-        document.getElementById("record-time").innerHTML = timeString;
+        var timeString = convertTime(parseInt(localStorage.getItem('recordTime')));         
+        var element = document.getElementById("record-time");
+        element.classList.remove('text-green-500');
+        element.parentElement.classList.remove('border-2', 'border-amber-400');
+        element.innerHTML = timeString;
     }
 
     var timeString = convertTime(elapsedTime);
@@ -335,12 +348,8 @@ window.onload = function() {
         } 
         else {
             localStorage.setItem('letters', '');
-            guesses = letters.split(' ');
-            for (i = 0; i<guesses.length-1; i++) {
-                var guess = letters.split(' ')[i];
-                current_guess = guess.split("");
-                enter();
-            }
+            var guesses = letters.match(/.{5}/g);
+            guesses.forEach(element => {current_guess = element.split(""); enter()});
         }
         if (parseInt(localStorage.getItem('gameMode')) == 1) {
             document.getElementById("modeToggle").checked = true;
@@ -13128,6 +13137,7 @@ var wordsToGuessAgainst = ["aahed",
 "pengo",
 "penis",
 "penna",
+"penne",
 "penni",
 "penny",
 "pense",
